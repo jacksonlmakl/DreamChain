@@ -129,10 +129,13 @@ def handle_client(client_socket, blockchain):
         response = pickle.dumps(list(blockchain.nodes))
         client_socket.send(response)
     else:
+        # Receive and add the block
         block = pickle.loads(request)
         blockchain.chain.append(block)
+        print(f"Received block {block['index']} from peer and added to the chain.")
 
     client_socket.close()
+
 
 def start_server(blockchain):
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
