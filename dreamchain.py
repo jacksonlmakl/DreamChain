@@ -150,12 +150,22 @@ def handle_client(client_socket, blockchain):
         response = pickle.dumps(list(blockchain.nodes))
         client_socket.send(response)
     else:
-        # Receive and append a new block
-        block = pickle.loads(request)
-        blockchain.chain.append(block)
-        print(f"Received block {block['index']} from peer and added to the chain.")
+        # Assume it's a new node sending its address or a block
+        try:
+            data = pickle.loads(request)
+            if isinstance(data, tuple) and len(data) == 2:
+                # New node registering itself (expecting an address tuple like ('ip', port))
+                print(f"Received new node: {data}")
+                blockchain.register_node(data)
+            else:
+                # Assume it's a block being sent
+                blockchain.chain.append(data)
+                print(f"Received block {data['index']} from peer and added to the chain.")
+        except Exception as e:
+            print(f"Error handling request: {e}")
 
     client_socket.close()
+
 
 
 def start_server(blockchain):
