@@ -167,7 +167,6 @@ def handle_client(client_socket, blockchain):
     client_socket.close()
 
 
-
 def start_server(blockchain):
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind(('0.0.0.0', blockchain.port))
@@ -206,7 +205,7 @@ class Node:
         except Exception as e:
             print(f"Error connecting to master node: {e}")
             return
-    
+
         # Register this node with the master
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -217,29 +216,17 @@ class Node:
         except Exception as e:
             print(f"Error registering with master node: {e}")
             return
-    
+
         # Register with all nodes (including master)
         for node in nodes:
             if node != ('localhost', self.port):  # Skip self
                 self.register_node(node)
-    
+
         # Finally, register with master node itself
         self.register_node(master_node)
-    
+
         # Step 3: Resolve conflicts and sync with the latest chain
         self.resolve_conflicts()
-    
-    
-            # Register with all nodes (including master)
-            for node in nodes:
-                if node != ('localhost', self.port):  # Skip self
-                    self.register_node(node)
-    
-            # Finally, register with master node itself
-            self.register_node(master_node)
-    
-            # Step 3: Resolve conflicts and sync with the latest chain
-            self.resolve_conflicts()
 
     def register_node(self, node_address):
         """
