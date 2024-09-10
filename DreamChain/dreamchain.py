@@ -279,7 +279,7 @@ class Node:
             print("Our chain is authoritative.")
 
 class DreamChainNode:
-    def __init__(self,port)
+    def __init__(self,port):
         # Create a new node and connect to the master node at 54.197.152.22:5000
         node = Node(port, ('54.197.152.22', 5000))
     
