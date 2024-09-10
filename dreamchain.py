@@ -115,7 +115,6 @@ class DreamChain:
             print(f"Error fetching chain from peer {node}: {e}")
             return None, None
 
-
     def register_node(self, address):
         self.nodes.add(address)
 
@@ -132,6 +131,7 @@ class DreamChain:
             s.close()
         except Exception:
             pass
+
 
 def handle_client(client_socket, blockchain):
     request = client_socket.recv(4096)
@@ -254,6 +254,7 @@ class Node:
             print("Chain replaced with the longest one.")
         else:
             print("Our chain is authoritative.")
+
 
 
 
