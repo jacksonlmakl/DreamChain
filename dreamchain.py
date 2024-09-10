@@ -95,21 +95,26 @@ class DreamChain:
             return True
         return False
 
-
     def get_chain_from_peer(self, node):
         """
-        Retrieve the blockchain from a peer node.
+        Retrieve the blockchain from a peer node, fetching the data in chunks.
         """
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect(node)
             s.send(b"GET_CHAIN")
+
+            # Use a loop to fetch the entire chain
+            data = b""
+            while True:
+                part = s.recv(4096)
+                if not part:
+                    break
+                data += part
             
-            # Increase buffer size to handle larger chains
-            response = s.recv(8192)
             s.close()
-            
-            length, chain = pickle.loads(response)
+
+            length, chain = pickle.loads(data)
             return length, chain
         except Exception as e:
             print(f"Error fetching chain from peer {node}: {e}")
@@ -129,8 +134,8 @@ class DreamChain:
             data = pickle.dumps(block)
             s.send(data)
             s.close()
-        except Exception:
-            pass
+        except Exception as e:
+            print(f"Error sending block to peer {node}: {e}")
 
 
 def handle_client(client_socket, blockchain):
@@ -151,8 +156,6 @@ def handle_client(client_socket, blockchain):
         print(f"Received block {block['index']} from peer and added to the chain.")
 
     client_socket.close()
-
-
 
 
 def start_server(blockchain):
@@ -254,34 +257,6 @@ class Node:
             print("Chain replaced with the longest one.")
         else:
             print("Our chain is authoritative.")
-
-
-
-
-
-def resolve_conflicts(self):
-    """
-    Resolves conflicts by applying the longest valid chain in the network.
-    Fetches the chain from all peers and applies the longest one if valid.
-    """
-    new_chain = None
-    max_length = len(self.chain)
-
-    for node in self.nodes:
-        length, chain = self.get_chain_from_peer(node)
-        if chain and length > max_length and self.valid_chain(chain):
-            max_length = length
-            new_chain = chain
-
-    # If we discovered a new, valid chain longer than our current one, replace it
-    if new_chain:
-        self.chain = new_chain
-        print("Chain replaced with the longest one from peer.")
-        return True
-    else:
-        print("Our chain is authoritative.")
-    return False
-
 
 
 def DreamChainNode(port):
