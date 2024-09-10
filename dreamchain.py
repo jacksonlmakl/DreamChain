@@ -236,17 +236,18 @@ def DreamChainNode(port):
     return node
 
 def MasterNode():
-    master_node = Node(5000)
+    # master_node = Node(5000)
+    master_node = Node('localhost', 5000)
     return master_node
     
-if __name__ == '__main__':
-    # Create a local node that connects to the master node at localhost:5000
-    master_node = ('localhost', 5000)
-    node = Node(5001, master_node)
+# if __name__ == '__main__':
+#     # Create a local node that connects to the master node at localhost:5000
+#     master_node = ('localhost', 5000)
+#     node = Node(5001, master_node)
 
-    # Add a transaction and mine a block
-    node.add_transaction('Alice', 'Bob', '100 coins')
-    node.mine_block()
+#     # Add a transaction and mine a block
+#     node.add_transaction('Alice', 'Bob', '100 coins')
+#     node.mine_block()
 
 # import socket
 # import pickle
