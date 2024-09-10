@@ -26,12 +26,3 @@ else
     echo "requirements.txt not found. Please provide one."
     exit 1
 fi
-
-# Step 6: Run the master_node.py script in the background with nohup
-echo "Running master_node.py in the background..."
-nohup python master_node.py &
-
-# Step 7: Notify the user
-echo "Master node is running in the background with nohup."
-echo "Check nohup.out for logs."
-
