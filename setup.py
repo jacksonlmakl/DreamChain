@@ -6,14 +6,12 @@ here = pathlib.Path(__file__).parent.resolve()
 long_description = (here / "README.md").read_text(encoding="utf-8")
 
 setup(
-    name='DreamChainPythonClient',
+    name='DreamChain',
     version='0.02',
     packages=find_packages(),
     install_requires=[
         'requests',
         'pandas',
-        'pickle',
-        'socket',
         'flask'
         
     ],
