@@ -202,8 +202,12 @@ class Node:
         last_proof = self.blockchain.last_block['proof']
         proof = self.blockchain.proof_of_work(last_proof)
         block = self.blockchain.new_block(proof)
+        
+        # Broadcast the new block to all registered nodes
+        print(f"Broadcasting block {block['index']} to peers...")
         self.blockchain.broadcast_block(block)
-        print(f"Block {block['index']} mined.")
+        print(f"Block {block['index']} mined and broadcasted.")
+
 
     def get_chain(self):
         """
