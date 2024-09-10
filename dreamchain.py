@@ -104,13 +104,17 @@ class DreamChain:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect(node)
             s.send(b"GET_CHAIN")
-            response = s.recv(4096)
+            
+            # Increase buffer size to handle larger chains
+            response = s.recv(8192)
             s.close()
+            
             length, chain = pickle.loads(response)
             return length, chain
         except Exception as e:
             print(f"Error fetching chain from peer {node}: {e}")
             return None, None
+
 
     def register_node(self, address):
         self.nodes.add(address)
@@ -178,7 +182,6 @@ class Node:
         """
         Connect to the master node, get a list of other nodes, and register with them.
         """
-        # Step 1: Get list of nodes from master node
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect(master_node)
@@ -191,7 +194,7 @@ class Node:
             print(f"Error connecting to master node: {e}")
             return
 
-        # Step 2: Register with all nodes (including master)
+        # Register with all nodes (including master)
         for node in nodes:
             if node != ('localhost', self.port):  # Skip self
                 self.register_node(node)
@@ -228,21 +231,19 @@ class Node:
         print(f"Broadcasting block {block['index']} to peers...")
         self.blockchain.broadcast_block(block)
         print(f"Block {block['index']} mined and broadcasted.")
-    
-        # Resolve conflicts to ensure that after mining the block, the node's chain remains authoritative
+
+        # Resolve conflicts to ensure the node's chain is up-to-date after mining
         self.resolve_conflicts()
 
     def get_chain(self):
         """
         Fetches the blockchain and ensures conflicts are resolved by syncing with peers.
         """
-        # Resolve conflicts to ensure the node has the latest chain
         print("Resolving conflicts to sync with the latest chain from peers...")
         self.resolve_conflicts()
     
         # Now return the local chain, which should be the latest after conflict resolution
         return self.blockchain.chain
-
 
     def resolve_conflicts(self):
         """
@@ -253,6 +254,33 @@ class Node:
             print("Chain replaced with the longest one.")
         else:
             print("Our chain is authoritative.")
+
+
+
+
+def resolve_conflicts(self):
+    """
+    Resolves conflicts by applying the longest valid chain in the network.
+    Fetches the chain from all peers and applies the longest one if valid.
+    """
+    new_chain = None
+    max_length = len(self.chain)
+
+    for node in self.nodes:
+        length, chain = self.get_chain_from_peer(node)
+        if chain and length > max_length and self.valid_chain(chain):
+            max_length = length
+            new_chain = chain
+
+    # If we discovered a new, valid chain longer than our current one, replace it
+    if new_chain:
+        self.chain = new_chain
+        print("Chain replaced with the longest one from peer.")
+        return True
+    else:
+        print("Our chain is authoritative.")
+    return False
+
 
 
 def DreamChainNode(port):
