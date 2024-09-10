@@ -122,14 +122,15 @@ def handle_client(client_socket, blockchain):
     request = client_socket.recv(4096)
 
     if request == b"GET_CHAIN":
+        # Return the current length and chain to the requesting peer
         response = pickle.dumps((len(blockchain.chain), blockchain.chain))
         client_socket.send(response)
     elif request == b"GET_NODES":
-        # Return list of known nodes
+        # Return the list of known nodes
         response = pickle.dumps(list(blockchain.nodes))
         client_socket.send(response)
     else:
-        # Receive and add the block
+        # Receive and append a new block
         block = pickle.loads(request)
         blockchain.chain.append(block)
         print(f"Received block {block['index']} from peer and added to the chain.")
@@ -194,6 +195,7 @@ class Node:
         """
         self.blockchain.register_node(node_address)
         print(f"Registered with node {node_address}")
+        print(f"Current registered nodes: {self.blockchain.nodes}")
 
     def add_transaction(self, sender, recipient, data):
         """
@@ -231,19 +233,11 @@ class Node:
             print("Our chain is authoritative.")
 
 def DreamChainNode(port):
-    node = Node(port, ('54.197.152.22', 5000))  # Connect to the master node
-    node.resolve_conflicts()  # Ensure the local chain is updated with the master node's chain
+    # Create a new node and connect to the master node at 54.197.152.22:5000
+    node = Node(port, ('54.197.152.22', 5000))
+
+    # Fetch the latest chain from the master node and ensure the local chain is up-to-date
+    print("Resolving conflicts to sync with the master node's chain...")
+    node.resolve_conflicts()
+
     return node
-
-def MasterNode():
-    master_node = Node(5000)
-    return master_node
-    
-if __name__ == '__main__':
-    # Create a local node that connects to the master node at localhost:5000
-    master_node = ('localhost', 5000)
-    node = Node(5001, master_node)
-
-    # Add a transaction and mine a block
-    node.add_transaction('Alice', 'Bob', '100 coins')
-    node.mine_block()
