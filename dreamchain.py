@@ -138,6 +138,7 @@ def handle_client(client_socket, blockchain):
     client_socket.close()
 
 
+
 def start_server(blockchain):
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind(('0.0.0.0', blockchain.port))
@@ -219,18 +220,26 @@ class Node:
 
     def get_chain(self):
         """
-        Fetches the blockchain.
+        Fetches the blockchain and ensures conflicts are resolved by syncing with peers.
         """
+        # Resolve conflicts to ensure the node has the latest chain
+        print("Resolving conflicts to sync with the latest chain from peers...")
+        self.resolve_conflicts()
+    
+        # Now return the local chain, which should be the latest after conflict resolution
         return self.blockchain.chain
+
 
     def resolve_conflicts(self):
         """
-        Resolves conflicts in the blockchain by applying the longest valid chain.
+        Resolves conflicts by applying the longest valid chain in the network.
+        Fetches the chain from all peers and applies the longest one if valid.
         """
         if self.blockchain.resolve_conflicts():
             print("Chain replaced with the longest one.")
         else:
             print("Our chain is authoritative.")
+
 
 def DreamChainNode(port):
     # Create a new node and connect to the master node at 54.197.152.22:5000
