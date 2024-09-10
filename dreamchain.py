@@ -206,17 +206,40 @@ class Node:
         except Exception as e:
             print(f"Error connecting to master node: {e}")
             return
-
+    
+        # Register this node with the master
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect(master_node)
+            # Send this node's address to the master node for registration
+            s.send(pickle.dumps(('localhost', self.port)))  # Replace 'localhost' with public IP if needed
+            s.close()
+        except Exception as e:
+            print(f"Error registering with master node: {e}")
+            return
+    
         # Register with all nodes (including master)
         for node in nodes:
             if node != ('localhost', self.port):  # Skip self
                 self.register_node(node)
-
+    
         # Finally, register with master node itself
         self.register_node(master_node)
-
+    
         # Step 3: Resolve conflicts and sync with the latest chain
         self.resolve_conflicts()
+    
+    
+            # Register with all nodes (including master)
+            for node in nodes:
+                if node != ('localhost', self.port):  # Skip self
+                    self.register_node(node)
+    
+            # Finally, register with master node itself
+            self.register_node(master_node)
+    
+            # Step 3: Resolve conflicts and sync with the latest chain
+            self.resolve_conflicts()
 
     def register_node(self, node_address):
         """
