@@ -221,7 +221,7 @@ class Node:
             print("Our chain is authoritative.")
 
 def DreamChainNode(port):
-    return Node(port, ('54.197.152.22', 5000))
+    return Node(port, ('54.197.152.22', port))
     # return Node(port, ('localhost', 5000))
 
 def MasterNode():
