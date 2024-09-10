@@ -1,12 +1,21 @@
-from dreamchain import MasterNode
+import socket
+import pickle
+from threading import Thread
+from dreamchain import DreamChain, start_server  # Assuming DreamChain and start_server are in dreamchain.py
+
+class MasterNode:
+    def __init__(self, port=5000):
+        self.blockchain = DreamChain(port)
+        self.port = port
+
+        # Start the server to accept incoming requests
+        server_thread = Thread(target=start_server, args=(self.blockchain,))
+        server_thread.start()
+
+        print(f"Master node is running on port {self.port}")
 
 if __name__ == '__main__':
-    # Start the master node on port 5000
-    master_node = MasterNode()
+    # Create and run the master node on port 5000
+    master_node = MasterNode(5000)
 
-    # Keep the master node running indefinitely
-    print("Master node is running on port 5000 and ready to accept connections...")
-
-    # The node will continue to accept incoming connections via its server thread
-    while True:
-        pass
+    # The server thread will keep the program running, no need for manual looping.
