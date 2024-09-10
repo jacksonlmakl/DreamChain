@@ -236,8 +236,12 @@ def DreamChainNode(port):
     return node
 
 def MasterNode():
-    # master_node = Node(5000)
-    master_node = Node('0.0.0.0', 5000)
+    master_node = ('localhost', 5000)
+    node = Node(5001, master_node)
+
+    # Add a transaction and mine a block
+    node.add_transaction('Jackson', 'Jackson', 'Some Data')
+    node.mine_block()
     return master_node
     
 # if __name__ == '__main__':
