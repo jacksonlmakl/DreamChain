@@ -75,6 +75,10 @@ class DreamChain:
         return True
 
     def resolve_conflicts(self):
+        """
+        Resolves conflicts by applying the longest valid chain in the network.
+        Fetches the chain from all peers and applies the longest one if valid.
+        """
         new_chain = None
         max_length = len(self.chain)
 
@@ -84,12 +88,18 @@ class DreamChain:
                 max_length = length
                 new_chain = chain
 
+        # If we discovered a new, valid chain longer than our current one, replace it
         if new_chain:
             self.chain = new_chain
+            print("Chain replaced with the longest one from peer.")
             return True
         return False
 
+
     def get_chain_from_peer(self, node):
+        """
+        Retrieve the blockchain from a peer node.
+        """
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect(node)
@@ -98,7 +108,8 @@ class DreamChain:
             s.close()
             length, chain = pickle.loads(response)
             return length, chain
-        except Exception:
+        except Exception as e:
+            print(f"Error fetching chain from peer {node}: {e}")
             return None, None
 
     def register_node(self, address):
@@ -136,6 +147,7 @@ def handle_client(client_socket, blockchain):
         print(f"Received block {block['index']} from peer and added to the chain.")
 
     client_socket.close()
+
 
 
 
@@ -216,7 +228,9 @@ class Node:
         print(f"Broadcasting block {block['index']} to peers...")
         self.blockchain.broadcast_block(block)
         print(f"Block {block['index']} mined and broadcasted.")
-
+    
+        # Resolve conflicts to ensure that after mining the block, the node's chain remains authoritative
+        self.resolve_conflicts()
 
     def get_chain(self):
         """
