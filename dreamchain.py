@@ -235,9 +235,9 @@ def DreamChainNode(port):
     node.resolve_conflicts()  # Ensure the local chain is updated with the master node's chain
     return node
 
-# def MasterNode():
-#     master_node = Node(5000)
-#     return master_node
+def MasterNode():
+    master_node = Node(5000)
+    return master_node
     
 if __name__ == '__main__':
     # Create a local node that connects to the master node at localhost:5000
