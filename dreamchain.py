@@ -211,7 +211,7 @@ class Node:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect(master_node)
             # Send this node's address to the master node for registration
-            s.send(pickle.dumps(('54.197.152.22', self.port)))  # Replace 'localhost' with public IP if needed
+            s.send(pickle.dumps(('localhost', self.port)))  # Replace 'localhost' with public IP if needed
             s.close()
         except Exception as e:
             print(f"Error registering with master node: {e}")
