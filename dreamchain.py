@@ -237,7 +237,7 @@ def DreamChainNode(port):
 
 def MasterNode():
     # master_node = Node(5000)
-    master_node = Node('localhost', 5000)
+    master_node = Node('0.0.0.0', 5000)
     return master_node
     
 # if __name__ == '__main__':
