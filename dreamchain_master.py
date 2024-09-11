@@ -19,7 +19,7 @@ def get_ip():
     #     ip = '127.0.0.1'
     # finally:
     #     s.close()
-    ip='52.15.223.205'
+    ip='3.12.46.176'
     return ip
 
 class DreamChain:
@@ -296,8 +296,8 @@ class Node:
 
 
 def DreamChainNode(port):
-    # Create a new node and connect to the master node at 52.15.223.205:5000
-    node = Node(port, ('52.15.223.205', 5000))
+    # Create a new node and connect to the master node at 3.12.46.176:5000
+    node = Node(port, ('3.12.46.176', 5000))
 
     # Fetch the latest chain from the master node and ensure the local chain is up-to-date
     print("Resolving conflicts to sync with the master node's chain...")
@@ -587,8 +587,8 @@ def DreamChainNode(port):
 
 
 # def DreamChainNode(port):
-#     # Create a new node and connect to the master node at 52.15.223.205:5000
-#     node = Node(port, ('52.15.223.205', 5000))
+#     # Create a new node and connect to the master node at 3.12.46.176:5000
+#     node = Node(port, ('3.12.46.176', 5000))
 
 #     # Fetch the latest chain from the master node and ensure the local chain is up-to-date
 #     print("Resolving conflicts to sync with the master node's chain...")
