@@ -1,7 +1,7 @@
 import socket
 import pickle
 from threading import Thread
-from dreamchain import DreamChainNode, DreamChain # Assuming DreamChain and start_server are in dreamchain.py
+from dreamchain import * # Assuming DreamChain and start_server are in dreamchain.py
 
 class MasterNode:
     def __init__(self, port=5000):
