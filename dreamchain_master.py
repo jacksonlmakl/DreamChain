@@ -7,18 +7,19 @@ import json
 from uuid import uuid4
 
 def get_ip():
-    """
-    Returns the local IP address of the machine.
-    """
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    try:
-        # Doesn't need to be reachable, just to get the local network IP
-        s.connect(('10.254.254.254', 1))
-        ip = s.getsockname()[0]
-    except Exception:
-        ip = '127.0.0.1'
-    finally:
-        s.close()
+    # """
+    # Returns the local IP address of the machine.
+    # """
+    # s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    # try:
+    #     # Doesn't need to be reachable, just to get the local network IP
+    #     s.connect(('10.254.254.254', 1))
+    #     ip = s.getsockname()[0]
+    # except Exception:
+    #     ip = '127.0.0.1'
+    # finally:
+    #     s.close()
+    ip='54.197.152.22'
     return ip
 
 class DreamChain:
