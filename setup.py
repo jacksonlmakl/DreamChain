@@ -7,7 +7,7 @@ long_description = (here / "README.md").read_text(encoding="utf-8")
 
 setup(
     name='DreamChain',
-    version='0.15',
+    version='0.16',
     packages=find_packages(),
     install_requires=[
         'requests',
