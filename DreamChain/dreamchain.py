@@ -150,6 +150,7 @@ class DreamChain:
             s.send(data)
             s.close()
         except Exception as e:
+            pass
             # print(f"Error sending block to peer {node}: {e}")
 
 
@@ -178,7 +179,7 @@ def handle_client(client_socket, blockchain):
                 # print(f"Received block {data['index']} from peer and added to the chain.")
         except Exception as e:
             # print(f"Error handling request: {e}")
-            continue
+            pass
     
     client_socket.close()
 
@@ -289,10 +290,12 @@ class Node:
         Resolves conflicts by applying the longest valid chain in the network.
         Fetches the chain from all peers and applies the longest one if valid.
         """
-        if self.blockchain.resolve_conflicts():
-            print("Chain replaced with the longest one.")
-        else:
-            print("Our chain is authoritative.")
+        self.blockchain.resolve_conflicts()
+        return
+        # if self.blockchain.resolve_conflicts():
+        #     print("Chain replaced with the longest one.")
+        # else:
+        #     print("Our chain is authoritative.")
 
 
 def DreamChainNode(port):
@@ -300,7 +303,7 @@ def DreamChainNode(port):
     node = Node(port, ('54.197.152.22', 5000))
 
     # Fetch the latest chain from the master node and ensure the local chain is up-to-date
-    print("Resolving conflicts to sync with the master node's chain...")
+    # print("Resolving conflicts to sync with the master node's chain...")
     node.resolve_conflicts()
 
     return node
