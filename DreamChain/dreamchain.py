@@ -132,7 +132,7 @@ class DreamChain:
             length, chain = pickle.loads(data)
             return length, chain
         except Exception as e:
-            print(f"Error fetching chain from peer {node}: {e}")
+            # print(f"Error fetching chain from peer {node}: {e}")
             return None, None
 
     def register_node(self, address):
@@ -150,7 +150,7 @@ class DreamChain:
             s.send(data)
             s.close()
         except Exception as e:
-            print(f"Error sending block to peer {node}: {e}")
+            # print(f"Error sending block to peer {node}: {e}")
 
 
 def handle_client(client_socket, blockchain):
@@ -177,7 +177,8 @@ def handle_client(client_socket, blockchain):
                 blockchain.chain.append(data)
                 print(f"Received block {data['index']} from peer and added to the chain.")
         except Exception as e:
-            print(f"Error handling request: {e}")
+            # print(f"Error handling request: {e}")
+            continue
 
     client_socket.close()
 
@@ -216,9 +217,9 @@ class Node:
             response = s.recv(4096)
             s.close()
             nodes = pickle.loads(response)
-            print(f"Received nodes from master: {nodes}")
+            # print(f"Received nodes from master: {nodes}")
         except Exception as e:
-            print(f"Error connecting to master node: {e}")
+            # print(f"Error connecting to master node: {e}")
             return
 
         # Register this node with the master
@@ -277,7 +278,7 @@ class Node:
         """
         Fetches the blockchain and ensures conflicts are resolved by syncing with peers.
         """
-        print("Resolving conflicts to sync with the latest chain from peers...")
+        # print("Resolving conflicts to sync with the latest chain from peers...")
         self.resolve_conflicts()
     
         # Now return the local chain, which should be the latest after conflict resolution
