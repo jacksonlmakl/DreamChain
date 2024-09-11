@@ -155,7 +155,7 @@ class DreamChain:
 
 def handle_client(client_socket, blockchain):
     request = client_socket.recv(4096)
-
+    
     if request == b"GET_CHAIN":
         # Return the current length and chain to the requesting peer
         response = pickle.dumps((len(blockchain.chain), blockchain.chain))
@@ -179,7 +179,7 @@ def handle_client(client_socket, blockchain):
         except Exception as e:
             # print(f"Error handling request: {e}")
             continue
-
+    
     client_socket.close()
 
 
