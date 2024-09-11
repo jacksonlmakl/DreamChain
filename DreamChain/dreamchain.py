@@ -299,8 +299,8 @@ class Node:
 
 
 def DreamChainNode(port):
-    # Create a new node and connect to the master node at 52.15.223.205:5000
-    node = Node(port, ('52.15.223.205', 5000))
+    # Create a new node and connect to the master node at 3.12.46.176:5000
+    node = Node(port, ('3.12.46.176', 5000))
 
     # Fetch the latest chain from the master node and ensure the local chain is up-to-date
     # print("Resolving conflicts to sync with the master node's chain...")
@@ -591,8 +591,8 @@ def DreamChainNode(port):
 
 # class DreamChainNode:
 #     def __init__(self,port):
-#         # Create a new node and connect to the master node at 52.15.223.205:5000
-#         node = Node(port, ('52.15.223.205', 5000))
+#         # Create a new node and connect to the master node at 3.12.46.176:5000
+#         node = Node(port, ('3.12.46.176', 5000))
     
 #         # Fetch the latest chain from the master node and ensure the local chain is up-to-date
 #         print("Resolving conflicts to sync with the master node's chain...")
