@@ -106,7 +106,7 @@ class DreamChain:
         # If we discovered a new, valid chain longer than our current one, replace it
         if new_chain:
             self.chain = new_chain
-            print("Chain replaced with the longest one from peer.")
+            # print("Chain replaced with the longest one from peer.")
             return True
         return False
 
@@ -170,12 +170,12 @@ def handle_client(client_socket, blockchain):
             data = pickle.loads(request)
             if isinstance(data, tuple) and len(data) == 2:
                 # New node registering itself (expecting an address tuple like ('ip', port))
-                print(f"Received new node: {data}")
+                # print(f"Received new node: {data}")
                 blockchain.register_node(data)
             else:
                 # Assume it's a block being sent
                 blockchain.chain.append(data)
-                print(f"Received block {data['index']} from peer and added to the chain.")
+                # print(f"Received block {data['index']} from peer and added to the chain.")
         except Exception as e:
             # print(f"Error handling request: {e}")
             continue
@@ -230,7 +230,7 @@ class Node:
             s.send(pickle.dumps((get_ip(), self.port)))  # Now uses the actual IP address
             s.close()
         except Exception as e:
-            print(f"Error registering with master node: {e}")
+            # print(f"Error registering with master node: {e}")
             return
 
         # Register with all nodes (including master)
@@ -249,8 +249,8 @@ class Node:
         Register a node in the network.
         """
         self.blockchain.register_node(node_address)
-        print(f"Registered with node {node_address}")
-        print(f"Current registered nodes: {self.blockchain.nodes}")
+        # print(f"Registered with node {node_address}")
+        # print(f"Current registered nodes: {self.blockchain.nodes}")
 
     def add_transaction(self, sender, recipient, data):
         """
@@ -267,9 +267,9 @@ class Node:
         block = self.blockchain.new_block(proof)
         
         # Broadcast the new block to all registered nodes
-        print(f"Broadcasting block {block['index']} to peers...")
+        # print(f"Broadcasting block {block['index']} to peers...")
         self.blockchain.broadcast_block(block)
-        print(f"Block {block['index']} mined and broadcasted.")
+        # print(f"Block {block['index']} mined and broadcasted.")
 
         # Resolve conflicts to ensure the node's chain is up-to-date after mining
         self.resolve_conflicts()
