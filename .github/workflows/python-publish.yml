@@ -25,10 +25,17 @@ jobs:
         python -m pip install --upgrade pip
         pip install build wheel twine pyarmor
 
+    # Obfuscate code using pyarmor
     - name: Obfuscate code with pyarmor
       run: |
-        pyarmor pack -x " --with-license licenses/license.lic" -o obfuscated_package/ your_package_directory/
+        mkdir -p obfuscated_package/
+        pyarmor pack -x " --with-license licenses/license.lic" -o obfuscated_package/ .
 
+    # List directory contents for debugging
+    - name: Check obfuscation output
+      run: ls -l obfuscated_package/
+
+    # Build package (Wheel) from the obfuscated directory
     - name: Build package (Wheel)
       run: |
         cd obfuscated_package/
