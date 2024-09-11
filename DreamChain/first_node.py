@@ -1,7 +1,7 @@
-from .dreamchain import DreamChainNode, DreamChain
+from dreamchain import DreamChainNode, DreamChain
 
 # Create and connect Node 1
-node1 = DreamChainNode(5005).node
+node1 = DreamChainNode(5005)
 
 # Node 1 mines a block
 node1.add_transaction('Jackson', 'Jackson', {'Data':'Something'})
