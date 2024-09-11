@@ -1,4 +1,4 @@
-from dreamchain import DreamChainNode, DreamChain
+from dreamchain_master import DreamChainNode, DreamChain
 
 # Create and connect Node 1
 node1 = DreamChainNode(5005)
