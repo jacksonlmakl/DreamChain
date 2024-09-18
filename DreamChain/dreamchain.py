@@ -297,8 +297,50 @@ class Node:
         # else:
         #     print("Our chain is authoritative.")
 
+import pandas as pd
+import psycopg2
+import hashlib
+import random
+import string
+import datetime
 
-def DreamChainNode(port):
+
+# Function to fetch license table and return it as a DataFrame
+def get_license_table():
+    # Database connection details
+    conn = psycopg2.connect(
+        host="44.206.249.55",
+        database="dreamchain",
+        user="postgres",
+        password="DreamChainPgHHHJuIkLoHmNhYYuiNkjfaw"
+    )
+    
+    # SQL query to fetch data from the license table
+    query = "SELECT * FROM ACCOUNTS.LICENSE"
+    
+    # Using pandas to execute the query and return the results as a DataFrame
+    df = pd.read_sql(query, conn)
+    
+    # Close the connection
+    conn.close()
+    
+    return df
+
+def authKey(key):
+    df=get_license_table().dropna(subset=['license_key'])
+    df=df[df['license_key']==key]
+    if len(df)>0:
+        return True
+    else:
+        return False
+
+# key='b4bc30b15e265df16db27f82a877b8029046d862b272fe08d18a3fb00893639d'
+
+def DreamChainNode(port,key):
+    valid=authKey(key)
+    if not valid:
+        message="Invalid License Key"
+        return message
     # Create a new node and connect to the master node at 3.12.46.176:5000
     node = Node(port, ('3.12.46.176', 5000))
 
